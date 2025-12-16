@@ -18,14 +18,7 @@ rockBtn.addEventListener('click', () => play(rockBtn.value));
 paperBtn.addEventListener('click', () => play(paperBtn.value));
 scissorsBtn.addEventListener('click', () => play(scissorsBtn.value));
 resetBtn.addEventListener('click', () => {
-  score.win = 0;
-  score.loss = 0;
-  score.tie = 0;
-  store.removeItem('score');
-  const p = document.createElement('p');
-  p.textContent = 'your score is reset';
-  div.textContent = '';
-  div.appendChild(p);
+  confirmation();
 });
 
 const autoBtn = document.querySelector('.auto-play-button');
@@ -33,16 +26,7 @@ let isAutoPlaying = false;
 let intervalId;
 
 autoBtn.addEventListener('click', () => {
-  if (!isAutoPlaying) {
-    intervalId = setInterval(() => {
-      const playerMove = chooseRandom(hands);
-      play(playerMove);
-    }, 1000); 
-    isAutoPlaying = true;
-  } else {
-    clearInterval(intervalId);
-    isAutoPlaying = false;
-  }
+  autoPlay();
 });
 
 document.body.addEventListener('keydown', (ev) => {
@@ -52,6 +36,10 @@ document.body.addEventListener('keydown', (ev) => {
     play('paper');
   } else if (ev.key === 's') {
     play('scissors');
+  } else if (ev.key === 'a') {
+    autoPlay();
+  } else if (ev.key === 'Backspace') {
+    confirmation();
   }
 })
 
@@ -85,3 +73,55 @@ const play = (hand) => {
   div.appendChild(p);
 }
 
+const autoPlay = () => {
+  if (!isAutoPlaying) {
+    intervalId = setInterval(() => {
+      const playerMove = chooseRandom(hands);
+      play(playerMove);
+    }, 1000); 
+    isAutoPlaying = true;
+    autoBtn.textContent = 'Stop Playing';
+  } else {
+    clearInterval(intervalId);
+    isAutoPlaying = false;
+    autoBtn.textContent = 'Auto Play';
+  }
+}
+
+const resetDiv = document.querySelector('.reset-confirm-div');
+
+const confirmation = () => {
+  const confirmP = document.createElement('p');
+  confirmP.textContent = 'Are you sure you want to reset the score?';
+  const yesBtn = document.createElement('button');
+  const noBtn = document.createElement('button');
+  yesBtn.classList.add('yes-btn');
+  noBtn.classList.add('no-btn');
+  yesBtn.textContent = 'Yes';
+  noBtn.textContent = 'No';
+  resetDiv.appendChild(confirmP);
+  resetDiv.appendChild(yesBtn);
+  resetDiv.appendChild(noBtn);
+  yesBtn.addEventListener('click', () => {
+    resetScore();
+    confirmP.remove();
+    yesBtn.remove();
+    noBtn.remove();
+  });
+  noBtn.addEventListener('click', () => {
+    confirmP.remove();
+    yesBtn.remove();
+    noBtn.remove();
+  });
+}
+
+const resetScore = () => {
+  score.win = 0;
+  score.loss = 0;
+  score.tie = 0;
+  store.removeItem('score');
+  const p = document.createElement('p');
+  p.textContent = 'your score is reset';
+  div.textContent = '';
+  div.appendChild(p);
+}

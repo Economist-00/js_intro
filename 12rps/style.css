@@ -29,10 +29,16 @@ body {
   margin-top: 50px;
 }
 
-.reset-score-button, .auto-play-button {
+.reset-score-button, .auto-play-button, .yes-btn, .no-btn {
   background-color: white;
   border: none;
   font-size: 15px;
   padding: 8px 15px;
   cursor: pointer;
 }
+
+.reset-confirm-div {
+  display: flex;
+  gap: 10px;
+}
+

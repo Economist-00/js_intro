@@ -1,19 +1,19 @@
 'use strict';
 
 
-const add = function(n1, n2) {
+const add = (n1, n2) => {
   console.log(n1 + n2);
 }
 
 add(2, 3);
 add(2, 3);
 
-const runTwice = function(fun) {
+const runTwice = (fun) => {
   fun();
   fun();
 }
 
-runTwice(function() {console.log('12b');});
+runTwice(() => {console.log('12b');});
 runTwice(add);
 
 const startButton = document.createElement('button');
@@ -26,7 +26,7 @@ startButton.addEventListener('click', () => {
   if (!isClicked) {
     startButton.textContent = 'Loading...';
     intervalIdBtn = setInterval(
-      function() {
+      () => {
         startButton.textContent = 'Finished'
       },
       1000
@@ -62,7 +62,6 @@ addButton.addEventListener('click', () => {
 
 
 const title = document.querySelector('title');
-console.log(title.textContent);
 
 let messages = 2;
 
@@ -72,7 +71,7 @@ let intervalId;
 
 const displayNotifications = () => {
   intervalId = setInterval(
-    function() {
+    () => {
       if (title.textContent === 'Document') {
         title.textContent = `(${messages}) New messages`;
       } else {
@@ -102,5 +101,3 @@ removeBtn.addEventListener('click', () => {
     }
   }
 });
-
-
