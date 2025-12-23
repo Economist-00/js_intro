@@ -1,6 +1,9 @@
 'use strict';
 
 
+import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
+
+
 export const deliveryOptions = [{
   id: '1',
   deliveryDays: 7,
@@ -26,4 +29,32 @@ export const getDeliveryOption = (deliveryOptionId) => {
   });
 
   return deliveryOption || deliveryOptions[0];
+}
+
+
+export const calculateDeliveryDate = (deliveryOption) => {
+  const today = dayjs();
+  const { deliveryDays } = deliveryOption;
+
+  let realDeliveryDays = 0;
+  let remainingDays = deliveryDays;
+  let deliveryDate;
+
+  while (remainingDays > 0) {
+    realDeliveryDays++;
+    deliveryDate = today.add(
+      realDeliveryDays,
+      'days'
+    );
+    const dayOfWeek = deliveryDate.format('dddd');
+    if (dayOfWeek === 'Saturday' || dayOfWeek === 'Sunday') {
+      continue;
+    }
+    remainingDays--;
+  }
+
+  const dateString = deliveryDate.format(
+    'dddd, MMMM D'
+  );
+  return dateString;
 }
